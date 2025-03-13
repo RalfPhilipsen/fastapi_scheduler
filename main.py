@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from schemas.set_timer_schema import Timer
 
-app = FastAPI()
+app = FastAPI(
+    title="Scheduler API",
+    description="The API for scheduling callbacks",
+    version="0.0.1"
+)
 
 
 @app.post(path="/timer",
