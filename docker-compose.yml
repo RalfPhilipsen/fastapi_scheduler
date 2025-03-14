@@ -1,0 +1,44 @@
+version: "3.7"
+services:
+  scheduler_api:
+    image: scheduler_api:latest
+    container_name: scheduler_api
+    user: root
+    depends_on:
+      - redis
+      - celery_worker
+    build:
+      context: C:\Projects\fastapi_scheduler\api
+    ports:
+      - "80:80"
+    networks:
+      - scheduler_network
+    # volumes:
+    #   - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
+
+  redis:
+    image: redis:7.4.2
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+    networks:
+      - scheduler_network
+
+  celery_worker:
+    image: scheduler_api:latest
+    build:
+      context: C:\Projects\fastapi_scheduler\api
+    container_name: celery_worker
+    command: celery -A main.celery worker --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+    # volumes:
+    #   - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
+    networks:
+      - scheduler_network
+
+networks:
+  scheduler_network:
+    name: scheduler_network
