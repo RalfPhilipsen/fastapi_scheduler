@@ -18,10 +18,12 @@ celery = Celery(
 
 @celery.task
 def trigger_webhook(timer_uuid: str, url: str):
-    logger.info(f"Performing POST call to {url} (id {timer_uuid})")
-    resp = requests.post(url, json={"id": timer_uuid})
-    if resp.ok:
-        logging.info(f"Successfully performed POST call to {url}, receiving status {resp.status_code}")
-    else:
-        logging.error(f"Failed performing POST call to {url}, receiving status {resp.status_code}")
-    redis_client.hset(timer_uuid, "expires_at", 0)
+    logger.info(f"Performing POST call {timer_uuid} to {url}")
+    try:
+        resp = requests.post(url, json={"id": timer_uuid})
+        if resp.ok:
+            logging.info(f"Successfully performed POST call to {url}, receiving status {resp.status_code}")
+        else:
+            logging.error(f"Failed performing POST call to {url}, receiving status {resp.status_code}")
+    finally:
+        redis_client.hset(timer_uuid, "expires_at", 0)

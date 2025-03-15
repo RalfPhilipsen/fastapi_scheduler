@@ -26,6 +26,9 @@ To execute the tests, run:
 
 `docker exec scheduler_api bash -c "pytest"`
 
+## Swagger documentation
+Swagger documentation is automatically generated and available under the /docs endpoint.
+
 ## Some dependencies to know about
 
 - fastapi: The framework used to build this API.
@@ -33,4 +36,4 @@ To execute the tests, run:
 - celery: Used for the worker that performs the webhook events.
 - redis: Cache used for storing the webhook events data.
 - pytest: Used for running the automated tests
-- 
+- pydantic: Comes with fastapi and is used to validate input
