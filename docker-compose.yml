@@ -13,8 +13,8 @@ services:
       - "80:80"
     networks:
       - scheduler_network
-    # volumes:
-    #   - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
+    volumes:
+       - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
 
   redis:
     image: redis:7.4.2
@@ -29,13 +29,13 @@ services:
     build:
       context: C:\Projects\fastapi_scheduler\api
     container_name: celery_worker
-    command: celery -A main.celery worker --loglevel=info
+    command: celery -A celery_tasks.celery worker --loglevel=info
     depends_on:
       - redis
     environment:
       - REDIS_HOST=redis
-    # volumes:
-    #   - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
+    volumes:
+       - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
     networks:
       - scheduler_network
 
