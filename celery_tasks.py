@@ -1,16 +1,19 @@
 from celery import Celery
 from redis_config import redis_client
 import logging
+import os
 import requests
 
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+redis_connection_string = f"redis://{os.environ.get('REDIS_HOST')}:6379/0"
+
 celery = Celery(
     "tasks",
-    broker="redis://redis:6379/0",
-    backend="redis://redis:6379/0"
+    broker=redis_connection_string,
+    backend=redis_connection_string
 )
 
 @celery.task

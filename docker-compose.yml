@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 services:
   scheduler_api:
     image: scheduler_api:latest
@@ -7,6 +7,8 @@ services:
     depends_on:
       - redis
       - celery_worker
+    environment:
+      - REDIS_HOST=redis
     build:
       context: C:\Projects\fastapi_scheduler\api
     ports:
