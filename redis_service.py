@@ -1,7 +1,7 @@
-from fastapi import HTTPException
-import time
 from celery_tasks import trigger_webhook
+from fastapi import HTTPException
 from redis_config import redis_client
+import time
 
 
 def store_webhook_in_redis(timer_uuid: str, total_seconds: int, url: str) -> None:

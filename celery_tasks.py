@@ -1,7 +1,8 @@
 from celery import Celery
+from redis_config import redis_client
 import logging
 import requests
-from redis_config import redis_client
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from schemas.timer_setter_schema import Timer
-from schemas.timer_response_schema import TimerResponse
 from redis_service import store_webhook_in_redis, get_timer_seconds
+from schemas.timer_response_schema import TimerResponse
+from schemas.timer_setter_schema import Timer
 import uuid
 
 

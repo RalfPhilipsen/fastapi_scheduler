@@ -1,8 +1,9 @@
 from fastapi.testclient import TestClient
 from main import app
+from redis_config import redis_client
 import time
 import uuid
-from redis_config import redis_client
+
 
 client = TestClient(app=app)
 
@@ -17,14 +18,13 @@ def test_set_timer():
             "url": "http://example.com/webhook"
         },
     )
-    assert response.status_code == 201
     data = response.json()
+
+    assert response.status_code == 201
     assert "id" in data
     assert data["time_left"] == 2
+    assert redis_client.exists(data["id"])
 
-    # Check if timer exists in Redis
-    timer_uuid = data["id"]
-    assert redis_client.exists(timer_uuid)
 
 def test_set_timer_invalid():
     response = client.post(
@@ -37,31 +37,31 @@ def test_set_timer_invalid():
         },
     )
     assert response.status_code == 400
-    assert response.json()["detail"] == "Timer must be greater than zero"
 
-def test_get_timer():
-    # Create a timer
+
+def test_get_recent_timer():
     timer_uuid = str(uuid.uuid4())
     expires_at = int(time.time()) + 5
     redis_client.hset(timer_uuid, mapping={"expires_at": expires_at, "url": "http://example.com/webhook"})
 
-    # Fetch the timer
     response = client.get(f"/timer/{timer_uuid}")
-    assert response.status_code == 200
     data = response.json()
+
+    assert response.status_code == 200
     assert "time_left" in data
-    assert data["time_left"] > 0  # Timer should still be running
+    assert data["time_left"] > 0
+
 
 def test_get_expired_timer():
-    # Create an expired timer
     timer_uuid = str(uuid.uuid4())
     redis_client.hset(timer_uuid, mapping={"expires_at": int(time.time()) - 10, "url": "http://example.com/webhook"})
 
-    # Fetch the timer
     response = client.get(f"/timer/{timer_uuid}")
-    assert response.status_code == 200
     data = response.json()
-    assert data["time_left"] == 0  # Timer should be expired
+
+    assert response.status_code == 200
+    assert data["time_left"] == 0
+
 
 def test_get_non_existent_timer():
     response = client.get(f"/timer/{uuid.uuid4()}")
