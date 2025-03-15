@@ -18,7 +18,7 @@ def set_timer(timer: Timer,
               redis_service: RedisService = Depends(get_redis_service)):
     total_seconds = timer.hours * 3600 + timer.minutes * 60 + timer.seconds
     if total_seconds <= 0:
-        raise HTTPException(status_code=400, detail="Timer must be greater than zero")
+        raise HTTPException(status_code=400, detail=f"Timer must be greater than zero, received {str(total_seconds)}")
 
     timer_uuid = str(uuid.uuid4())
     redis_service.store_webhook_in_redis(timer_uuid, total_seconds, timer.url)

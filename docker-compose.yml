@@ -10,7 +10,7 @@ services:
     environment:
       - REDIS_HOST=redis
     build:
-      context: C:\Projects\fastapi_scheduler\api
+      context: ./
     ports:
       - "80:80"
     networks:
@@ -29,7 +29,7 @@ services:
   celery_worker:
     image: scheduler_api:latest
     build:
-      context: C:\Projects\fastapi_scheduler\api
+      context: ./
     container_name: celery_worker
     command: celery -A celery_tasks.celery worker --loglevel=info
     depends_on:

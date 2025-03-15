@@ -9,12 +9,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 redis_connection_string = f"redis://{os.environ.get('REDIS_HOST')}:6379/0"
-
 celery = Celery(
     "tasks",
     broker=redis_connection_string,
     backend=redis_connection_string
 )
+
 
 @celery.task
 def trigger_webhook(timer_uuid: str, url: str):
