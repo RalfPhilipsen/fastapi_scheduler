@@ -15,7 +15,7 @@ celery = Celery(
 
 @celery.task
 def trigger_webhook(timer_uuid: str, url: str):
-    logger.info(f"Performing POST call to {url}")
+    logger.info(f"Performing POST call to {url} (id {timer_uuid})")
     resp = requests.post(url, json={"id": timer_uuid})
     if resp.ok:
         logging.info(f"Successfully performed POST call to {url}, receiving status {resp.status_code}")
