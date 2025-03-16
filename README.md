@@ -14,12 +14,13 @@ You can run the stack by opening the CLI in this folder and running:
 `docker-compose up -d`
 
 This will automatically build the project and pull the `redis` image. It will then run the API (port 80), the Redis server (port 6379) and the Celery worker.
+During the build process, the libraries defined in `requirements.txt` will automatically be installed.
 
 Alternatively, you can build the project beforehand by running:
 
 `docker build -t scheduler_api:latest .`
 
-For more building info, see `Dockerfile`
+For more info on how the image is built, see `Dockerfile`
 
 ## How to run tests in Docker
 To execute the tests, run:
@@ -35,7 +36,6 @@ Swagger documentation is automatically generated and available under the /docs e
 - A maximum timer length is required, as we cannot guarantee to handle anything a million years from now. This will depend on business case, for now it is set to 1 year.
 
 ## Some dependencies to know about
-
 - fastapi: The framework used to build this API.
 - uvicorn: The ASGI used to run the server.
 - celery: Used for the worker that performs the webhook events.
