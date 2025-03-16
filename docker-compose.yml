@@ -9,6 +9,7 @@ services:
       - celery_worker
     environment:
       - REDIS_HOST=redis
+      - MAX_SECONDS=31536000
     build:
       context: ./
     ports:
@@ -16,7 +17,7 @@ services:
     networks:
       - scheduler_network
 #    volumes:
-#       - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
+#       - ./:/home/ubuntu/fast_api/
 
   redis:
     image: redis:7.4.2
@@ -37,7 +38,7 @@ services:
     environment:
       - REDIS_HOST=redis
 #    volumes:
-#       - C:\Projects\fastapi_scheduler\api:/home/ubuntu/fast_api/
+#       - ./:/home/ubuntu/fast_api/
     networks:
       - scheduler_network
 

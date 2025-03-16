@@ -10,6 +10,13 @@ class RedisService:
 
 
     def store_webhook_in_redis(self, timer_uuid: str, total_seconds: int, url: str) -> None:
+        """
+        Stores the webhook timer info in Redis cache and schedules worker to execute it
+        :param timer_uuid: The unique id of the timer
+        :param total_seconds: The amount of seconds after which the task is executed
+        :param url: The URL to which the POST request will be sent
+        :return: None
+        """
         expires_at = int(time.time()) + total_seconds
         self.redis_client.hset(timer_uuid, mapping={"expires_at": expires_at, "url": str(url)})
 
@@ -17,6 +24,11 @@ class RedisService:
 
 
     def get_timer_seconds(self, timer_uuid: str) -> int:
+        """
+        Retrieves the time left until webhook timer executes
+        :param timer_uuid: The unique id of the timer
+        :return: The amount of seconds left until the task is executed
+        """
         if not redis_client.exists(timer_uuid):
             raise HTTPException(status_code=404, detail=f"Timer {timer_uuid} not found")
 

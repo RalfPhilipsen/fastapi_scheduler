@@ -26,13 +26,26 @@ def test_set_timer():
     assert redis_client.exists(data["id"])
 
 
-def test_set_timer_invalid_time():
+def test_set_timer_zero_time():
     response = client.post(
         url="/timer",
         json={
             "hours": 0,
             "minutes": 0,
             "seconds": 0,
+            "url": "http://example.com/webhook"
+        },
+    )
+    assert response.status_code == 400
+
+
+def test_set_timer_long_time():
+    response = client.post(
+        url="/timer",
+        json={
+            "hours": 0,
+            "minutes": 0,
+            "seconds": 31536010,
             "url": "http://example.com/webhook"
         },
     )

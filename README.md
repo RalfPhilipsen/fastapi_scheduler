@@ -29,6 +29,11 @@ To execute the tests, run:
 ## Swagger documentation
 Swagger documentation is automatically generated and available under the /docs endpoint.
 
+
+## Assumptions made
+- Hours, minutes and seconds are all integers. It assumed that a granularity lower than a seconds is not necessary.
+- A maximum timer length is required, as we cannot guarantee to handle anything a million years from now. This will depend on business case, for now it is set to 1 year.
+
 ## Some dependencies to know about
 
 - fastapi: The framework used to build this API.
