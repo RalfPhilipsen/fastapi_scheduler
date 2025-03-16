@@ -42,3 +42,12 @@ Swagger documentation is automatically generated and available under the /docs e
 - redis: Cache used for storing the webhook events data.
 - pytest: Used for running the automated tests
 - pydantic: Comes with fastapi and is used to validate input
+
+## Improvement for running at large-scale production environment
+- Set up in a way that is horizontally scalable (e.g. Kubernetes, Azure App Services etc.).
+- Set up some kind of Web Application Firewall and DDOS protection to prevent suspicious usage.
+- Set up authentication and/or deploy within private network (if possible).
+- Create a retry mechanism for the POST request, handling exceptions for e.g. 429 errors. This can help with large amounts of requests.
+- For testing functionality, we use a simple Docker Redis container without authentication. For production, use a proper Redis solution such as Redis Cloud or Azure Cache for Redis for better performance, and use authentication and SSL for security.
+- The 2 environment variables are now set in `docker-compose.yml`. For production, use a more elaborate way for handling your config and do not store secrets in codebase.
+- Monitor your Redis solution to ensure storage doesn't get full and check if the amount of connected clients does not get too high over time.
