@@ -17,7 +17,8 @@ def get_redis_service() -> RedisService:
              status_code=201,
              response_model=TimerResponse,
              responses={400: {"model": ErrorMessage}, 500: {"model": ErrorMessage}},
-             description='Request to execute a webhook to a URL after the determined amount of time.')
+             description='Request to execute a webhook to a URL after the determined amount of time. '
+                         'Time should be more than 1 second and less than a year. Returns the id of the timer.')
 def set_timer(timer: Timer,
               redis_service: RedisService = Depends(get_redis_service)):
     total_seconds = timer.hours * 3600 + timer.minutes * 60 + timer.seconds

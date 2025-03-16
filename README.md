@@ -1,7 +1,7 @@
 # Webhook scheduler
 This application creates an API that handles timed webhooks, firing a POST request to a specified URL after a determined amount of time.
 
-The stack can de run with Docker and consists of 3 containers:
+The stack can be run with Docker and consists of 3 containers:
 - scheduler_api: this creates the API calls using FastAPI, accepts client input and stores the webhook events.
 - celery_worker: this executes the webhook events when its time has reached.
 - redis_server: this cache is used for storing the webhook information.
@@ -30,9 +30,13 @@ To execute the tests, run:
 ## Swagger documentation
 Swagger documentation is automatically generated and available under the /docs endpoint.
 
+## Code
+The API is set up in `main.py` which takes its routes from `routes.py`. Both endpoints use the RedisService dependency from `redis_service.py` which handles Redis interactions and scheduling tasks.
+These tasks are written in `celery_tasks.py`. The tests are available in `test_timer.py`
+
 
 ## Assumptions made
-- Hours, minutes and seconds are all integers. It assumed that a granularity lower than a seconds is not necessary.
+- Hours, minutes and seconds are all integers. It is assumed that a granularity lower than a second is not necessary.
 - A maximum timer length is required, as we cannot guarantee to handle anything a million years from now. This will depend on business case, for now it is set to 1 year.
 
 ## Some dependencies to know about
