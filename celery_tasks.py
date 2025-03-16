@@ -6,7 +6,6 @@ import requests
 
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
 
 redis_connection_string = f"redis://{os.environ.get('REDIS_HOST')}:6379/0"
 celery = Celery(
@@ -24,7 +23,7 @@ def trigger_webhook(timer_uuid: str, url: str) -> None:
     :param url: URL to which the post request is sent
     :return: None
     """
-    logger.info(f"Performing POST call {timer_uuid} to {url}")
+    logging.info(f"Performing POST call {timer_uuid} to {url}")
     try:
         resp = requests.post(url, json={"id": timer_uuid})
         if resp.ok:
